@@ -114,10 +114,6 @@ MONGO_URI=your_mongodb_connection_string
 
 JWT_SECRET=your_jwt_secret
 
-MONGO_URI=your_mongodb_connection_string
-
-JWT_SECRET=your_jwt_secret
-
 IMAGEKIT_PUBLIC_KEY=your_public_key
 
 IMAGEKIT_PRIVATE_KEY=your_private_key
@@ -144,7 +140,7 @@ npm start
 
 # 🔑 Authentication Endpoints
 
-## Register User
+## Register User 
 
 ### POST
 
@@ -189,11 +185,11 @@ npm start
 }
 ```
 
-### Response
+### Cookies
 
 ```json
 {
-  "token": "jwt_token"
+  "jwt_token": "jwt_token"
 }
 ```
 
@@ -216,10 +212,8 @@ npm start
 
 ---
 
-## Product Schema Example
 
-```md
-### Product Schema
+### Request Body
 
 ```json
 {
@@ -232,17 +226,6 @@ npm start
   "createdAt": "2026-05-30T10:00:00Z"
 }
 
-```
-
-### Request Body
-
-```json
-{
-  "title": "iPhone 15",
-  "description": "Latest Apple Smartphone",
-  "price": 79999,
-  "category": "Mobile"
-}
 ```
 
 ---
@@ -308,7 +291,7 @@ Client Login
  Receive JWT Token
       │
       ▼
- Send Token in Header
+ Send Token in Cookies
       │
       ▼
  Authentication Middleware
