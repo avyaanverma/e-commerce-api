@@ -232,10 +232,6 @@ npm start
   "createdAt": "2026-05-30T10:00:00Z"
 }
 
-### Headers
-
-```http
-Authorization: Bearer <token>
 ```
 
 ### Request Body
