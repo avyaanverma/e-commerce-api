@@ -22,7 +22,7 @@ productRoutes.get("/:id", getProduct);
  * @description Create a note using name, description, price, category
  * @access PRIVATE
  */
-productRoutes.post("/create", authMiddleware, upload.single("product"), createProduct);
+productRoutes.post("/create", authMiddleware, upload.array("productImages", 5), createProduct);
 /**
  * @route POST /delete
  * @description Delete a product using title and description

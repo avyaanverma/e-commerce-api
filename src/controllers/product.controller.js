@@ -1,4 +1,5 @@
 import { productModel } from "../models/product.schema.js";
+import fs from "fs";
 
 export const getAllProducts = async (req,res)=>{
     try {
@@ -57,6 +58,12 @@ export const createProduct = async (req, res)=>{
     
         const {name, description, price, category, images} = req.body;
 
+        if(!req.files && req.files.length===0){
+            return res.status(400).json({
+                message: "Atleast one image is required"
+            })
+        }
+
         if(!name){
             return res.status(400).json({
                 message: "Name is required"
@@ -84,12 +91,44 @@ export const createProduct = async (req, res)=>{
             images = [];
         }
 
+        const uploadPromises = req.files.map((file)=>{
+            const fileStream = fs.createReadStream(file.path);
+
+            return imagekit.upload({
+                file: fileStream,
+                fileName: file.filename,
+                folder: "/product-images",
+                extension: [
+                    {
+                        name: "google-auto-tagging",
+                        maxTags: 5,
+                        minConfidence: 95 
+                    }
+                ]
+            })
+            .then((response)=>{
+                fs.unlink(file.path, (err)=>{
+                    if(err) console.error("Local file Delete Error: " + err);
+                });
+
+                return response;
+            });
+        });
+
+        const uploadResponses = await Promise.all(uploadPromises);
+
+        const imageCollection = uploadResponses.map(response => ({
+            url: response.url,
+            fileId: response.fileId,
+            thumbnailUrl: response.thumbnailUrl
+            }));
+
         const product = await productModel.create({
             name: name,
             description: description,
             category: category,
             price : price,
-            images: images,
+            images: imageCollection,
             user: userId
         })
     
