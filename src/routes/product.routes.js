@@ -1,6 +1,7 @@
 import express from "express";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { createProduct, deleteProduct, getAllProducts, getProduct, updateProduct } from "../controllers/product.controller.js";
+import { upload } from "../middleware/multer.middleware.js";
 
 const productRoutes = express.Router();
 
@@ -21,11 +22,11 @@ productRoutes.get("/:id", getProduct);
  * @description Create a note using name, description, price, category
  * @access PRIVATE
  */
-productRoutes.post("/create", authMiddleware, createProduct);
+productRoutes.post("/create", authMiddleware, upload.single("product"), createProduct);
 /**
  * @route POST /delete
  * @description Delete a product using title and description
- * @access PRIVATE
+ * @access PRIVATE  
  */
 productRoutes.delete("/delete", authMiddleware, deleteProduct);
 /**

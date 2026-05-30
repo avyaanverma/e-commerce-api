@@ -13,6 +13,11 @@ app.use(cookieParser());
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/product", productRoutes);
+app.use((err, req, res, next)=>{
+    const error = err.message || "Internal Server Error";
+    res.status(500).send(error);
+})
+
 
 app.get("/user", async (req, res)=>{
     const users = await userModel.find();
